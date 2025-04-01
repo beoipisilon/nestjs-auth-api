@@ -5,6 +5,11 @@ import { LoginDto } from './dto/login.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { Request } from 'express';
+import { User } from '../users/entities/user.entity';
+
+interface RequestWithUser extends Request {
+  user: User;
+}
 
 @Controller('auth')
 export class AuthController {
@@ -35,13 +40,13 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Post('logout')
   @HttpCode(HttpStatus.OK)
-  async logout(@Req() req: Request) {
-    return this.authService.logout(req.user['id']);
+  async logout(@Req() req: RequestWithUser) {
+    return this.authService.logout(req.user.id);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('profile')
-  getProfile(@Req() req: Request) {
+  getProfile(@Req() req: RequestWithUser) {
     return req.user;
   }
 } 

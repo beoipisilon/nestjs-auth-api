@@ -1,5 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, BeforeInsert } from 'typeorm';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
+
+export type UserWithoutSensitiveData = Omit<User, 'password' | 'hashPassword'>;
 
 @Entity('users')
 export class User {
@@ -18,8 +20,8 @@ export class User {
   @Column()
   lastName: string;
 
-  @Column({ nullable: true })
-  refreshToken: string;
+  @Column({ nullable: true, type: 'text' })
+  refreshToken: string | null;
 
   @CreateDateColumn()
   createdAt: Date;

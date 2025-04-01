@@ -29,11 +29,11 @@ export class UsersService {
     return user;
   }
 
-  async findByEmail(email: string): Promise<User> {
+  async findByEmail(email: string): Promise<User | null> {
     return this.usersRepository.findOne({ where: { email } });
   }
 
   async updateRefreshToken(userId: string, refreshToken: string | null): Promise<void> {
-    await this.usersRepository.update(userId, { refreshToken });
+    await this.usersRepository.update(userId, { refreshToken: refreshToken || null });
   }
 } 
